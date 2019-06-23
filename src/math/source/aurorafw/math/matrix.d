@@ -7,6 +7,7 @@
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
 Copyright (C) 2018-2019 Aurora Free Open Source Software.
+Copyright (C) 2018-2019 Luís Ferreira <luis@aurorafoss.org>
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -35,6 +36,8 @@ directly send an email to: contact (at) aurorafoss.org .
 
 module aurorafw.math.matrix;
 
+//FIXME: Fix documentation to use D-style
+
 /** @file aurorafw/math/matrix.d
  * Variable Matrix file. This contains a variable matrix struct that
  * represents a grid with size of M * N.
@@ -46,8 +49,13 @@ module aurorafw.math.matrix;
  * N*M array, allows to manipulate it.
  * @since snapshot20180930
  */
-@nogc pure @safe struct mat(T, size_t M, size_t N) {
-	this(T num)
+@safe
+struct Matrix(T, long M = -1, long N = -1) {
+	static assert((M == -1 || M > 0) && (N == -1 || N > 0),
+		"matrices can't have negative cols or rows");
+
+
+	this(const T num)
 	in {
 		static assert(M == N, "invalid diagonal matrix");
 	}
@@ -56,9 +64,9 @@ module aurorafw.math.matrix;
 			matrix[i * M + i] = num;
 	}
 
-	this(immutable ref mat!(T, M, N) mat)
+	this(const Matrix!(T, M, N) matrix)
 	{
-		this = mat;
+		this = matrix;
 	}
 
 	this(T[M*N] arr)
@@ -220,9 +228,16 @@ module aurorafw.math.matrix;
 	T[M*N] matrix;
 }
 
-alias mat!(float, 2, 2) Matrix2x2f, Matrix2f, mat2;
-alias mat!(float, 3, 3) Matrix3x3f, Matrix3f, mat3;
-alias mat!(float, 4, 4) Matrix4x4f, Matrix4f, mat4;
-alias mat!(double, 2, 2) Matrix2x2d, Matrix2d;
-alias mat!(double, 3, 3) Matrix3x3d, Matrix3d;
-alias mat!(double, 4, 4) Matrix4x4d, Matrix4d;
+alias Matrix!(float, 2, 2) Matrix2x2f, Matrix2f, mat2;
+alias Matrix!(float, 3, 3) Matrix3x3f, Matrix3f, mat3;
+alias Matrix!(float, 4, 4) Matrix4x4f, Matrix4f, mat4;
+alias Matrix!(double, 2, 2) Matrix2x2d, Matrix2d;
+alias Matrix!(double, 3, 3) Matrix3x3d, Matrix3d;
+alias Matrix!(double, 4, 4) Matrix4x4d, Matrix4d;
+
+unittest {
+	Matrix!(int, 3, 3) matrix;
+	matrix = [1, 0, 0,
+			  0, 1, 0,
+			  0, 0, 1];
+}
