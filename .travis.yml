@@ -44,6 +44,8 @@ os:
 
 before_script:
   - brew install libsndfile libsoundio
+  - brew install caskroom/cask/brew-cask
+  - brew cask install xquartz
 
 script:
   - ./tools/dub.sh build --compiler=${DC}
