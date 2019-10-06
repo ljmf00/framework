@@ -3,9 +3,10 @@ module aurorafw.cli.terminal.terminal;
 import aurorafw.core.input.events;
 import aurorafw.core.input.keys;
 
+import aurorafw.corex.sys.posix.unistd;
+
 version(Posix)
 {
-	import core.sys.posix.unistd;
 	import core.sys.posix.termios;
 	import core.sys.posix.sys.ioctl;
 } else version(Windows)
@@ -28,6 +29,12 @@ import core.stdc.errno;
 import core.stdc.stdio;
 
 import riverd.ncurses;
+
+version(Windows)
+{
+	alias read = _read;
+	alias write = _write;
+}
 
 /** Exception for terminal die
  * This exception is thrown when theres a problem with
