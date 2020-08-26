@@ -7,8 +7,8 @@
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
 Copyright (C) 2019 Anton Fediushin
-Copyright (C) 2019 Aurora Free Open Source Software.
-Copyright (C) 2019 Luís Ferreira <luis@aurorafoss.org>
+Copyright (C) 2019-2020 Aurora Free Open Source Software.
+Copyright (C) 2019-2020 Luís Ferreira <luis@aurorafoss.org>
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -79,11 +79,23 @@ void runTest(ref Test testCase, bool isVerbose)
 
 	auto writer = stdout.lockingTextWriter;
 
+	// windows cmd doesn't support unicode
+	version(Windows)
+	{
+		enum successText = "success";
+		enum failText = "fail";
+	}
+	else
+	{
+		enum successText = "✓";
+		enum failText = "✗";
+	}
+
 	writer.formattedWrite(" %s %s %s",
 		// status symbol
 		testCase.status
-			? Console.colour("✓", Colour.ok)		// Success
-			: Console.colour("✗", Colour.achtung),	// Error
+			? Console.colour(successText, Colour.ok)		// Success
+			: Console.colour(failText, Colour.fail),	// Error
 		// module name
 		Console.emphasis(Console.truncateName(testCase.test.fullName[0..testCase.test.fullName.lastIndexOf('.')], isVerbose)),
 		// test name

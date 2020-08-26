@@ -7,8 +7,8 @@
  \__,_|\__,_|_|  \___/|_|  \__,_| |_| \___/|___/___/
 
 Copyright (C) 2019 Anton Fediushin
-Copyright (C) 2019 Aurora Free Open Source Software.
-Copyright (C) 2019 Luís Ferreira <luis@aurorafoss.org>
+Copyright (C) 2019-2020 Aurora Free Open Source Software.
+Copyright (C) 2019-2020 Luís Ferreira <luis@aurorafoss.org>
 
 This file is part of the Aurora Free Open Source Software. This
 organization promote free and open source software that you can
@@ -45,7 +45,7 @@ __gshared bool noColours;
 enum Colour {
 	none,
 	ok = 32,
-	achtung = 31,
+	fail = 31,
 }
 
 static struct Console {
